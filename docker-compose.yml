@@ -1,0 +1,106 @@
+# AgentCenter — Self-Hosted Docker Compose
+# See .env.example for required environment variables.
+# Docs: SETUP.md
+
+volumes:
+  pg_data:
+  redis_data:
+
+networks:
+  internal:
+    driver: bridge
+
+services:
+  # ── PostgreSQL ───────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_USER: postgres
+      POSTGRES_DB: agentcenter
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    pids_limit: 200
+
+  # ── Redis ────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru --requirepass ${REDIS_PASS}
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASS}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+    pids_limit: 200
+
+  # ── AgentCenter App ──────────────────────────────────────────────
+  app:
+    image: ghcr.io/missioncontrolsquad/agentcenter:${APP_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    networks:
+      - internal
+    environment:
+      - NODE_ENV=production
+      - POSTGRES_PRISMA_URL=postgresql://postgres:${PG_PASS}@postgres:5432/agentcenter
+      - POSTGRES_URL_NON_POOLING=postgresql://postgres:${PG_PASS}@postgres:5432/agentcenter
+      - AUTH_SECRET=${AUTH_SECRET}
+      - CRON_SECRET=${CRON_SECRET}
+      - REDIS_URL=redis://:${REDIS_PASS}@redis:6379
+      - NEXT_PUBLIC_MC_URL=${PUBLIC_URL:-http://localhost:3000}
+      # Optional — R2 storage for file uploads
+      - R2_ACCOUNT_ID=${R2_ACCOUNT_ID:-}
+      - R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID:-}
+      - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY:-}
+      - R2_BUCKET_NAME=${R2_BUCKET_NAME:-}
+      # Optional — Push notifications
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY:-}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-}
+      - VAPID_SUBJECT=${VAPID_SUBJECT:-}
+      # Optional — Email notifications
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - NOTIFICATION_FROM_EMAIL=${NOTIFICATION_FROM_EMAIL:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 512
