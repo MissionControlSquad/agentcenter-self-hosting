@@ -73,7 +73,7 @@ docker compose up -d
 
 Open `http://localhost:3000`, activate your license, and create your admin account.
 
-> **macOS users:** Replace `sed -i` with `sed -i ''` (BSD sed). The setup script handles this automatically.
+> **macOS users:** Replace `sed -i` with `sed -i ''` (BSD sed) in the commands above.
 
 ---
 
