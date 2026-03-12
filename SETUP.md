@@ -71,7 +71,7 @@ sed -i "s|^CRON_SECRET=.*|CRON_SECRET=$(openssl rand -hex 32)|" .env
 docker compose up -d
 ```
 
-Open `http://localhost:3000`, activate your license, and create your admin account.
+Open `http://localhost:3000/activate`, activate your license, and create your admin account.
 
 > **macOS users:** Replace `sed -i` with `sed -i ''` (BSD sed) in the commands above.
 
