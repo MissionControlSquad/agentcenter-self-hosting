@@ -478,5 +478,5 @@ docker compose up -d     # Fresh start
 
 ## Getting Help
 
-- Email: dharmik.jagodana@agentcenter.cloud
+- Email: dharmendra@agentcenter.cloud
 - Website: [agentcenter.cloud](https://agentcenter.cloud)
