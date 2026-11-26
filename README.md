@@ -12,12 +12,14 @@ The hosted AgentCenter app service (cloud tenants and the license server) has be
 published under the [MIT License](LICENSE). It is provided as-is and maintained on a best-effort
 basis by the community.
 
-One thing to know before you start: the published app image
-(`ghcr.io/missioncontrolsquad/agentcenter`) asks for a license key on first start and validates it
-against the hosted license server. That server is gone, so a new installation cannot be activated,
-and an existing one stops working a few days after its cached license token expires. The app's
-source lives in [MissionControlSquad/monorepo](https://github.com/MissionControlSquad/monorepo);
-follow that repository for any change to the license check.
+No license key is needed. The license check has been removed from the app
+([MissionControlSquad/monorepo#165](https://github.com/MissionControlSquad/monorepo/pull/165)), so an
+install is fully unlocked from first start and never contacts a license server.
+
+One thing to know before you start: app images (`ghcr.io/missioncontrolsquad/agentcenter`) published
+before that change still ask for a license key and can't be activated. Use an image published after
+it, set `APP_VERSION` in `.env` to that version, or build the image from
+[MissionControlSquad/monorepo](https://github.com/MissionControlSquad/monorepo).
 
 ## What's here
 

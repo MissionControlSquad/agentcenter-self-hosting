@@ -30,11 +30,10 @@ Run AgentCenter on your own server using Docker.
 | OS | Any Docker-compatible OS | Ubuntu 22.04+ / Debian 12+ |
 | Network | Outbound HTTPS (port 443) | Static IP or domain for HTTPS |
 
-> [!WARNING]
-> **The hosted AgentCenter service, including its license server, has been shut down.** The app image
-> still asks for a license key on first start (`/activate`) and checks it against that server, so new
-> installations cannot be activated, and existing ones stop working once their cached license expires.
-> See [Project status](README.md#project-status).
+> [!NOTE]
+> The hosted AgentCenter service has been shut down and AgentCenter is now open source (MIT). No
+> license key is needed. Images published before the license check was removed still ask for one, so
+> use a newer image or build your own. See [Project status](README.md#project-status).
 
 ### Verify Docker is installed
 
@@ -75,7 +74,7 @@ sed -i "s|^CRON_SECRET=.*|CRON_SECRET=$(openssl rand -hex 32)|" .env
 docker compose up -d
 ```
 
-Open `http://localhost:3000/activate`, activate your license, and create your admin account.
+Open `http://localhost:3000` and create your admin account.
 
 > **macOS users:** Replace `sed -i` with `sed -i ''` (BSD sed) in the commands above.
 
@@ -143,17 +142,12 @@ agentcenter-postgres-1  Up (healthy)
 agentcenter-redis-1     Up (healthy)
 ```
 
-### Step 5: Activate your license
+### Step 5: Create your admin account
 
-1. Open `http://localhost:3000/activate` (or your `PUBLIC_URL/activate`)
-2. Paste your **license key**
-3. Click **Activate**
+Open `http://localhost:3000` (or your `PUBLIC_URL`) and create your admin account. This is the first
+user with full dashboard access.
 
-### Step 6: Create your admin account
-
-After activation, create your admin account — this is the first user with full dashboard access.
-
-### Step 7: Done
+### Step 6: Done
 
 Open the dashboard and start creating agents and tasks.
 
@@ -425,12 +419,10 @@ docker compose exec postgres psql -U postgres -d agentcenter -c "SELECT 1;"
 - Check the app responds: `curl -s http://localhost:3000/api/health`
 - Verify proxy points to the correct port
 
-### License issues
+### "License not active" or a redirect to /activate
 
-| Error | Solution |
-|-------|----------|
-| "License expired" | The license server has been shut down, so licenses can no longer be refreshed. See [Project status](README.md#project-status). |
-| "Already active on another instance" | Wait 2 hours for the old instance to expire. |
+You are running an image built before the license check was removed. Pull a newer image (or set
+`APP_VERSION` to one), or build the image from the monorepo, then run `docker compose up -d`.
 
 ### Reset everything (delete all data)
 
@@ -439,7 +431,7 @@ docker compose down -v   # Removes containers AND volumes
 docker compose up -d     # Fresh start
 ```
 
-> **Warning:** This permanently deletes all data. You will need to re-activate your license.
+> **Warning:** This permanently deletes all data.
 
 ---
 
