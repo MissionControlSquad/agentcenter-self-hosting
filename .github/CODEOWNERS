@@ -1,0 +1,10 @@
+# Code owners are requested for review automatically on every pull request.
+# https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# Later rules win, so the more specific paths come last.
+
+*                       @JagodanaDharmendra @buildappbase
+
+# Changes to CI, automation and repository policy need an owner's eye.
+/.github/               @JagodanaDharmendra @buildappbase
+/LICENSE                @JagodanaDharmendra @buildappbase
+/SECURITY.md            @JagodanaDharmendra @buildappbase

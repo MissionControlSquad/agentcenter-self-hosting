@@ -1,0 +1,32 @@
+name: Validate
+
+# Checks that both Compose files parse and resolve with the example environment.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compose:
+    name: Compose config
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate docker-compose.yml
+        run: |
+          cp .env.example .env
+          docker compose -f docker-compose.yml config --quiet
+      - name: Validate docker-compose.yml + docker-compose.prod.yml
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml config --quiet
