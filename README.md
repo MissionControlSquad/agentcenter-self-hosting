@@ -62,4 +62,4 @@ Pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the
 
 ## License
 
-[MIT](LICENSE) © MissionControlSquad
+[MIT](LICENSE) © 2026 Jagodana LLC
