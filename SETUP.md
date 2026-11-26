@@ -30,7 +30,11 @@ Run AgentCenter on your own server using Docker.
 | OS | Any Docker-compatible OS | Ubuntu 22.04+ / Debian 12+ |
 | Network | Outbound HTTPS (port 443) | Static IP or domain for HTTPS |
 
-You also need a **license key** — purchase one at [agentcenter.cloud](https://agentcenter.cloud).
+> [!WARNING]
+> **The hosted AgentCenter service, including its license server, has been shut down.** The app image
+> still asks for a license key on first start (`/activate`) and checks it against that server, so new
+> installations cannot be activated, and existing ones stop working once their cached license expires.
+> See [Project status](README.md#project-status).
 
 ### Verify Docker is installed
 
@@ -142,7 +146,7 @@ agentcenter-redis-1     Up (healthy)
 ### Step 5: Activate your license
 
 1. Open `http://localhost:3000/activate` (or your `PUBLIC_URL/activate`)
-2. Paste the **license key** you received after purchasing from developer
+2. Paste your **license key**
 3. Click **Activate**
 
 ### Step 6: Create your admin account
@@ -425,8 +429,8 @@ docker compose exec postgres psql -U postgres -d agentcenter -c "SELECT 1;"
 
 | Error | Solution |
 |-------|----------|
-| "License expired" | Your subscription may have lapsed. Contact support. |
-| "Already active on another instance" | Wait 2 hours for the old instance to expire, or contact support. |
+| "License expired" | The license server has been shut down, so licenses can no longer be refreshed. See [Project status](README.md#project-status). |
+| "Already active on another instance" | Wait 2 hours for the old instance to expire. |
 
 ### Reset everything (delete all data)
 
@@ -478,5 +482,6 @@ docker compose up -d     # Fresh start
 
 ## Getting Help
 
-- Email: dharmendra@agentcenter.cloud
-- Website: [agentcenter.cloud](https://agentcenter.cloud)
+- Questions and setup help: [GitHub Discussions](https://github.com/MissionControlSquad/agentcenter-self-hosting/discussions)
+- Reproducible bugs: [open an issue](https://github.com/MissionControlSquad/agentcenter-self-hosting/issues/new/choose)
+- Security vulnerabilities: [report privately](https://github.com/MissionControlSquad/agentcenter-self-hosting/security/advisories/new) (see [SECURITY.md](SECURITY.md))

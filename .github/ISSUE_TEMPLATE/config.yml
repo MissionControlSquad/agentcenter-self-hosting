@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/MissionControlSquad/agentcenter-self-hosting/security/advisories/new
+    about: Please report security problems privately. Never open a public issue for them.
+  - name: Ask a question
+    url: https://github.com/MissionControlSquad/agentcenter-self-hosting/discussions/categories/q-a
+    about: Usage questions and setup help belong in Discussions, not in issues.
+  - name: Suggest an idea
+    url: https://github.com/MissionControlSquad/agentcenter-self-hosting/discussions/categories/ideas
+    about: Start with a discussion so the idea can be shaped before it becomes an issue.
