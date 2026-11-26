@@ -8,7 +8,7 @@ on your own server.
 
 ## Project status
 
-The hosted AgentCenter service at agentcenter.cloud has been shut down, and this repository is now
+The hosted AgentCenter app service (cloud tenants and the license server) has been shut down, and this repository is now
 published under the [MIT License](LICENSE). It is provided as-is and maintained on a best-effort
 basis by the community.
 

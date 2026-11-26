@@ -2,10 +2,11 @@
 
 ## Project status
 
-The hosted AgentCenter service at `agentcenter.cloud` has been shut down. This repository is
-published under the [MIT License](LICENSE) and is provided as-is. There is no hosted
-infrastructure, license server or customer data operated by the maintainers any more, so reports
-about `*.agentcenter.cloud` hosts are out of scope.
+The hosted AgentCenter app service and its license server have been shut down. This repository
+is published under the [MIT License](LICENSE) and is provided as-is. The maintainers no longer run
+hosted tenants or hold customer data, so reports about the decommissioned app hosts are out of
+scope. The marketing site at `agentcenter.cloud` has its own repository,
+[MissionControlSquad/website](https://github.com/MissionControlSquad/website).
 
 ## Supported versions
 
@@ -47,7 +48,7 @@ In scope: code and configuration in this repository, including workflows under `
 
 Out of scope:
 
-- the decommissioned `agentcenter.cloud` service and its subdomains;
+- the decommissioned hosted app service and license server (tenant and admin hosts under `agentcenter.cloud`);
 - findings in third-party dependencies that are already publicly known (Dependabot tracks these);
 - reports that need a compromised host, physical access, or social engineering of maintainers;
 - missing hardening headers or best-practice notes with no demonstrated impact.
